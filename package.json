@@ -2,27 +2,23 @@
   "name": "simple-redux-persist",
   "version": "1.0.0",
   "description": "Synchronize Redux state with localStorage or sessionStorage",
-  "license": "GNU",
+  "license": "AGPL-3.0-or-later",
   "author": "Christian Llontop",
   "main": "dist/simple-redux-persist.cjs.js",
   "module": "dist/simple-redux-persist.esm.js",
   "browser": "dist/simple-redux-persist.umd.js",
   "scripts": {
     "prepare": "yarn build",
-    "build": "rollup -c",
-    "test": "jest --watch --coverage"
+    "build": "rollup -c"
   },
   "devDependencies": {
     "@babel/core": "7.4.0",
     "@babel/preset-env": "7.4.2",
-    "@rollup/plugin-typescript": "^6.1.0",
-    "@typescript-eslint/eslint-plugin": "^4.8.2",
-    "@typescript-eslint/parser": "^4.8.2",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "24.5.0",
     "eslint": "^7.14.0",
-    "jest": "24.5.0",
-    "jest-localstorage-mock": "^2.2.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
     "redux": "^3.7.2",
     "rollup": "1.7.0",
     "rollup-plugin-babel": "4.3.2",
@@ -44,11 +40,6 @@
     "url": "https://github.com/christianllv/simple-redux-persist/issues"
   },
   "homepage": "hhttps://github.com/christianllv/simple-redux-persist",
-  "jest": {
-    "setupFiles": [
-      "jest-localstorage-mock"
-    ]
-  },
   "files": [
     "dist"
   ]
