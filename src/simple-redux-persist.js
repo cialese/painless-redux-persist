@@ -11,6 +11,7 @@ const convertArrayToObject = (array = []) => array.reduce((obj, item) => ({
 
 const defaults = {
   storage: 'localStorage',
+  localkey: 'localStore',
   blacklist: {},
   whitelist: {},
 };
@@ -20,6 +21,10 @@ export const storeConfig = () => defaults;
 const setStorageConfig = (config) => {
   if (Object.prototype.hasOwnProperty.call(config, 'storage')) {
     defaults.storage = config.storage;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(config, 'localkey')) {
+    defaults.storage = config.localkey;
   }
 
   if (Object.prototype.hasOwnProperty.call(config, 'blacklist')) {
@@ -40,8 +45,9 @@ const setStorageConfig = (config) => {
 const getStorage = () => window[defaults.storage];
 
 const getLocalStore = () => {
+  const { localkey } = storeConfig();
   try {
-    return JSON.parse(getStorage().getItem('reduxStore'));
+    return JSON.parse(getStorage().getItem(localkey));
   } catch (e) {
     return {};
   }
@@ -77,11 +83,9 @@ const getStoreToPersist = (store) => {
 };
 
 const setLocalStore = (store) => {
+  const { localkey } = storeConfig();
   try {
-    return getStorage().setItem(
-      'reduxStore',
-      JSON.stringify(getStoreToPersist(store)),
-    );
+    return getStorage().setItem(localkey, JSON.stringify(getStoreToPersist(store)));
   } catch (e) {
     return {};
   }
@@ -96,7 +100,10 @@ export const defineState = (defaultState) => (reducer) => {
   return defaultState;
 };
 
-export const resetState = () => getStorage().removeItem('reduxStore');
+export const resetState = () => {
+  const { localkey } = storeConfig();
+  getStorage().removeItem(localkey);
+};
 
 export default (store, config = null) => {
   if (config) {
