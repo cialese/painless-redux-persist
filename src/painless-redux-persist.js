@@ -1,18 +1,9 @@
-const isNull = (value) => value === 'undefined' || value === null;
-
-const hasSameProps = (obj1, obj2) => Object.keys(obj1).every((prop) => Object.prototype.hasOwnProperty.call(obj2, prop));
-
-const hasValidItemsType = (array = []) => array.every((item) => typeof item === 'string');
-
-const convertArrayToObject = (array = []) => array.reduce((obj, item) => ({
-  ...obj,
-  [item]: item,
-}), {});
+import { hasSameProps, hasValidItemsType, isNull } from './utils';
 
 const defaults = {
   storage: 'localStorage',
   localkey: 'localStore',
-  blacklist: {},
+  blacklist: [],
 };
 
 export const storeConfig = () => defaults;
@@ -30,14 +21,14 @@ const setStorageConfig = (config) => {
     if (!hasValidItemsType(config.blacklist)) {
       throw new Error('Backlist item type should be string');
     }
-    defaults.blacklist = convertArrayToObject(config.blacklist);
+    defaults.blacklist = config.blacklist;
   }
 
   if (Object.prototype.hasOwnProperty.call(config, 'whitelist')) {
     if (!hasValidItemsType(config.whitelist)) {
       throw new Error('Whitelist item type should be string');
     }
-    defaults.whitelist = convertArrayToObject(config.whitelist);
+    defaults.whitelist = config.whitelist;
   }
 };
 
@@ -55,22 +46,24 @@ const getLocalStore = () => {
 const filterBlacklist = (state) => {
   const localState = { ...state };
   const { blacklist } = storeConfig();
-  Object.keys(state).forEach((value) => {
-    if (blacklist[value]) {
-      localState[value] = undefined;
-    }
+
+  blacklist.forEach((key) => {
+    localState[key] = undefined;
   });
+
   return localState;
 };
 
 const filterWhitelist = (state) => {
   const localState = {};
   const { whitelist } = storeConfig();
-  Object.keys(state).forEach((value) => {
-    if (whitelist[value]) {
-      localState[value] = state[value];
-    }
-  });
+
+  if (whitelist.length) {
+    whitelist.forEach((key) => {
+      localState[key] = state[key];
+    });
+  }
+
   return localState;
 };
 
