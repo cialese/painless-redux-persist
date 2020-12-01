@@ -10,7 +10,8 @@
   "scripts": {
     "prepare": "yarn build",
     "build": "rollup -c",
-    "test": "jest --watch --coverage"
+    "test": "jest --coverage",
+    "test-watch": "jest --watch --coverage"
   },
   "devDependencies": {
     "@babel/core": "7.4.0",
