@@ -1,6 +1,6 @@
 {
   "name": "painless-redux-persist",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Synchronize Redux state with localStorage or sessionStorage",
   "license": "AGPL-3.0-or-later",
   "author": "Christian Llontop",
