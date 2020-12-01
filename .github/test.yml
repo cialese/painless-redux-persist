@@ -1,0 +1,2 @@
+- name: Jest Annotations & Coverage
+  uses: mattallty/jest-github-action@v1.0.3
