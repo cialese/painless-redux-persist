@@ -13,7 +13,6 @@ const defaults = {
   storage: 'localStorage',
   localkey: 'localStore',
   blacklist: {},
-  whitelist: {},
 };
 
 export const storeConfig = () => defaults;
