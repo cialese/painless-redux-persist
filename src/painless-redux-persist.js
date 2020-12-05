@@ -1,43 +1,14 @@
-import { hasSameProps, hasValidItemsType, isNull } from './utils';
-
-const defaults = {
-  storage: 'localStorage',
-  localkey: 'localStore',
-  blacklist: [],
-};
-
-export const storeConfig = () => defaults;
-
-const setStorageConfig = (config) => {
-  if (Object.prototype.hasOwnProperty.call(config, 'storage')) {
-    defaults.storage = config.storage;
-  }
-
-  if (Object.prototype.hasOwnProperty.call(config, 'localkey')) {
-    defaults.storage = config.localkey;
-  }
-
-  if (Object.prototype.hasOwnProperty.call(config, 'blacklist')) {
-    if (!hasValidItemsType(config.blacklist)) {
-      throw new Error('Backlist item type should be string');
-    }
-    defaults.blacklist = config.blacklist;
-  }
-
-  if (Object.prototype.hasOwnProperty.call(config, 'whitelist')) {
-    if (!hasValidItemsType(config.whitelist)) {
-      throw new Error('Whitelist item type should be string');
-    }
-    defaults.whitelist = config.whitelist;
-  }
-};
-
-const getStorage = () => window[defaults.storage];
+import { hasSameProps, isNull } from './utils';
+import {
+  getStorage, resetConfig, setStorageConfig, storeConfig,
+} from './utils/config';
 
 const getLocalStore = () => {
-  const { localkey } = storeConfig();
+  const { localkey, decrypt } = storeConfig();
   try {
-    return JSON.parse(getStorage().getItem(localkey));
+    const storeString = getStorage().getItem(localkey);
+    const store = decrypt ? decrypt(storeString) : storeString;
+    return JSON.parse(store);
   } catch (e) {
     return {};
   }
@@ -75,9 +46,11 @@ const getStoreToPersist = (store) => {
 };
 
 const setLocalStore = (store) => {
-  const { localkey } = storeConfig();
+  const { localkey, encrypt } = storeConfig();
   try {
-    return getStorage().setItem(localkey, JSON.stringify(getStoreToPersist(store)));
+    const storeString = JSON.stringify(getStoreToPersist(store));
+    const storeToPersist = encrypt ? encrypt(storeString) : storeString;
+    return getStorage().setItem(localkey, storeToPersist);
   } catch (e) {
     return {};
   }
@@ -98,6 +71,7 @@ export const resetState = () => {
 };
 
 export default (store, config = null) => {
+  resetConfig();
   if (config) {
     setStorageConfig(config);
   }

@@ -1,11 +1,15 @@
 import { createStore, combineReducers } from 'redux';
 import { describe, it, expect } from '@jest/globals';
 import storePersist, {
-  storeConfig,
   getState,
   defineState,
   resetState,
 } from '../index';
+import { storeConfig } from '../utils/config';
+
+const encryptMessage = (message) => btoa(message);
+
+const decryptMessage = (message) => atob(message);
 
 const testReducer = (state = {}, action) => {
   if (action.type === 'test') {
@@ -21,6 +25,7 @@ const rootReducer = combineReducers({
 });
 
 const store = createStore(rootReducer);
+
 storePersist(store);
 
 describe('painless-redux-persists', () => {
@@ -28,11 +33,22 @@ describe('painless-redux-persists', () => {
     expect(storeConfig().storage).toBe('localStorage');
   });
 
+  it('Should return the default key for storage', () => {
+    expect(storeConfig().localkey).toBe('localStore');
+  });
+
   it('Should return the correct storage name after change', () => {
     storePersist(store, {
       storage: 'sessionStorage',
     });
     expect(storeConfig().storage).toBe('sessionStorage');
+  });
+
+  it('Should return the correct storage key name after change', () => {
+    storePersist(store, {
+      localkey: 'reduxLocal',
+    });
+    expect(storeConfig().localkey).toBe('reduxLocal');
   });
 
   it('Should return the store content after dispatch', () => {
@@ -105,7 +121,6 @@ describe('painless-redux-persists', () => {
     });
 
     const newStore = createStore(newRootReducer);
-
     storePersist(newStore, {
       blacklist: ['blacklistReducer'],
       storage: 'localStorage',
@@ -146,7 +161,6 @@ describe('painless-redux-persists', () => {
     });
 
     const newStore = createStore(newRootReducer);
-
     storePersist(newStore, {
       whitelist: ['whitelistReducer'],
       storage: 'localStorage',
@@ -164,5 +178,22 @@ describe('painless-redux-persists', () => {
 
     expect(getState().whitelistReducer.data).toBe('whitelistReducer');
     expect(getState().newReducer).toBeUndefined();
+  });
+
+  it('Should return the encrypted store content after dispatch', () => {
+    storePersist(store, {
+      encrypt: encryptMessage,
+      decrypt: decryptMessage,
+    });
+    store.dispatch({
+      type: 'test',
+      payload: 'testing',
+    });
+
+    expect(getState()).toEqual({
+      testReducer: {
+        data: 'testing',
+      },
+    });
   });
 });
