@@ -4,7 +4,7 @@
   "description": "Synchronize Redux state with localStorage or sessionStorage",
   "license": "AGPL-3.0-or-later",
   "author": "Christian Llontop",
-  "browser": "dist/painless-redux-persist.umd.js",
+  "browser": "dist/painless-redux-persist",
   "scripts": {
     "prepare": "yarn build",
     "build": "rollup -c",
