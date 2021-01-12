@@ -5,7 +5,7 @@ import storePersist, {
   getState,
   defineState,
   resetState,
-} from '../../dist/painless-redux-persist/local';
+} from '../../dist/painless-redux-persist/session';
 
 const encryptMessage = (message) => btoa(message);
 

@@ -1,9 +1,16 @@
 import { hasValidItemsType } from './utils';
 
-const settings = {
+const defaults = {
   storage: process.env.STORAGE_TYPE,
   localkey: 'localStore',
   blacklist: [],
+};
+
+let settings = {};
+
+export const resetConfig = () => {
+  settings = { ...defaults };
+  return settings;
 };
 
 export const storeConfig = () => settings;

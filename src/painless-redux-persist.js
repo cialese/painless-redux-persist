@@ -1,6 +1,6 @@
 import { hasSameProps, isNull } from './utils';
 import {
-  getStorage, setStorageConfig, storeConfig,
+  getStorage, resetConfig, setStorageConfig, storeConfig,
 } from './utils/config';
 
 const getLocalStore = () => {
@@ -71,6 +71,7 @@ export const resetState = () => {
 };
 
 export default (store, config = null) => {
+  resetConfig();
   if (config) {
     setStorageConfig(config);
   }

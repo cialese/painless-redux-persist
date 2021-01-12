@@ -22,7 +22,7 @@ export default [
         throwOnError: true,
       }),
       injectProcessEnv({
-        STORAGE_TYPE: 'localStorage'
+        STORAGE_TYPE: 'localStorage',
       }),
       terser(),
       commonjs(),
@@ -46,7 +46,7 @@ export default [
         throwOnError: true,
       }),
       injectProcessEnv({
-        STORAGE_TYPE: 'sessionStorage'
+        STORAGE_TYPE: 'sessionStorage',
       }),
       terser(),
       commonjs(),
@@ -56,4 +56,3 @@ export default [
     ],
   },
 ];
-
