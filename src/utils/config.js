@@ -9,10 +9,6 @@ const settings = {
 export const storeConfig = () => settings;
 
 export const setStorageConfig = (config) => {
-  if (Object.prototype.hasOwnProperty.call(config, 'storage')) {
-    settings.storage = config.storage;
-  }
-
   if (Object.prototype.hasOwnProperty.call(config, 'localkey')) {
     settings.localkey = config.localkey;
   }

@@ -4,7 +4,7 @@ import storePersist, {
   getState,
   defineState,
   resetState,
-} from '../index';
+} from '../../dist/painless-redux-persist/local';
 import { storeConfig } from '../utils/config';
 
 const encryptMessage = (message) => btoa(message);
@@ -28,27 +28,9 @@ const store = createStore(rootReducer);
 
 storePersist(store);
 
-describe('painless-redux-persists', () => {
-  it('Should return the default storage name', () => {
-    expect(storeConfig().storage).toBe('localStorage');
-  });
-
+describe('localStorage persist', () => {
   it('Should return the default key for storage', () => {
     expect(storeConfig().localkey).toBe('localStore');
-  });
-
-  it('Should return the correct storage name after change', () => {
-    storePersist(store, {
-      storage: 'sessionStorage',
-    });
-    expect(storeConfig().storage).toBe('sessionStorage');
-  });
-
-  it('Should return the correct storage key name after change', () => {
-    storePersist(store, {
-      localkey: 'reduxLocal',
-    });
-    expect(storeConfig().localkey).toBe('reduxLocal');
   });
 
   it('Should return the store content after dispatch', () => {
@@ -123,7 +105,6 @@ describe('painless-redux-persists', () => {
     const newStore = createStore(newRootReducer);
     storePersist(newStore, {
       blacklist: ['blacklistReducer'],
-      storage: 'localStorage',
     });
 
     newStore.dispatch({
@@ -163,7 +144,6 @@ describe('painless-redux-persists', () => {
     const newStore = createStore(newRootReducer);
     storePersist(newStore, {
       whitelist: ['whitelistReducer'],
-      storage: 'localStorage',
     });
 
     newStore.dispatch({
